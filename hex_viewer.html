@@ -1,0 +1,24 @@
+<!doctype HTML>
+<html>
+  <body>
+    <textarea style="height:16em; width:16em; resize: none;"></textarea>
+    <script>
+      let input = '00000400020002C01F000480048007E00D101508220826082A10106000000000';
+      function draw() {
+        console.log(input);
+        const isFullwidth = input.length == 32;
+        const lines = input.match(new RegExp(`[a-f0-9]{${isFullwidth ? 2 : 4}}`, 'giy'))
+	  .map(
+	    hex => parseInt(hex, 16)
+	      .toString(2)
+	      .padStart(isFullwidth ? 8 : 16, '0')
+	  );
+        const glyph  = lines
+	  .map(binary => Array.from(binary, n => --n ? '　' : '■').join(''))
+          .join('\n');
+        document.getElementsByTagName('textarea')[0].innerHTML = glyph;
+      }
+      draw();
+    </script>
+  </body>
+</html>
